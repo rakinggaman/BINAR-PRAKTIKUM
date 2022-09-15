@@ -1,0 +1,24 @@
+#rentCarsList {
+    padding: 16px;
+}
+
+.carCard {
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    width: auto;
+}
+
+.carName {
+    font-size: 24px;
+}
+
+.carPrice {
+    font-size: 20px;
+}
+
+.carImage {
+    height: 150px;
+    width: 20%;
+    object-fit: cover;
+}
