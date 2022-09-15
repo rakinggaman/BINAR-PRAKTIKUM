@@ -1,12 +1,27 @@
 #rentCarsList {
+    margin-top: 10px;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+#pageInputSection {
+    margin-top: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
 .carCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     border: 1px solid black;
     border-radius: 8px;
     padding: 8px;
-    width: auto;
+    width: 250px;
+    margin-bottom: 8px;
 }
 
 .carName {
@@ -19,6 +34,6 @@
 
 .carImage {
     height: 150px;
-    width: 20%;
+    width: 200px;
     object-fit: cover;
 }
