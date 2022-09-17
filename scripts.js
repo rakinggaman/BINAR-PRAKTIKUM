@@ -5,8 +5,17 @@ const rentCarsList = document.getElementById("rentCarsList")
 // mendapatkan div dengan id pageInputSection
 const pageInputSection = document.getElementById("pageInputSection")
 
+// mendapatkan div dengan id searchInputSection
+const searchInputSection = document.getElementById("searchInputSection")
+
+
+// mendapatkan div dengan id pageInputSection
+const searchInput = document.getElementById("searchInput")
+
 // mendapatkan input teks dengan id currentPageInput
 const currentPageInput = document.getElementById("currentPageInput")
+
+
 
 // penyimpanan data yang ditarik dari API
 let rentedCarsData = []
@@ -26,11 +35,11 @@ startFetchDataBtn.addEventListener("click", fetchRentCarsDataAsyncAwait)
 // mengambil data dari API - cara Promise.then dan Promise.catch
 function fetchRentCarsData() {
     fetch('https://bootcamp-rent-car.herokuapp.com/admin/car').
-        then(result => result.json()).
-        then((result) => {
-            rentedCarsData = result
-        }).
-        catch(err => console.error(err))
+    then(result => result.json()).
+    then((result) => {
+        rentedCarsData = result
+    }).
+    catch(err => console.error(err))
 }
 
 // mengambil data dari API - cara async/await
@@ -38,6 +47,7 @@ async function fetchRentCarsDataAsyncAwait() {
     try {
         // sembunyikan pageInputSection
         pageInputSection.setAttribute('class', 'doNotDisplay')
+        searchInputSecton.setAttribute('class', 'doNotDisplay')
 
         let result = await fetch('https://bootcamp-rent-car.herokuapp.com/admin/car')
         let rentCars = await result.json()
@@ -80,7 +90,7 @@ function getCarsPage(currentPage) {
 
     // mulai mengambil dari array
     const start = (currentPage - 1) * pageSize
-    // akhir index ambil array: start + besaran halaman
+        // akhir index ambil array: start + besaran halaman
     const end = start + pageSize
 
     // ambil data dari array
