@@ -5,7 +5,19 @@
     flex-direction: column;
 }
 
-#pageInputSection #searchInputSection {
+#pageInputSection {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    width: 250px;
+    margin-bottom: 8px;
+}
+
+#searchInputSection {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
@@ -22,7 +34,8 @@
 }
 
 #currentPageInput {
-    width: 200px;
+    width: inherit;
+    margin-top: 12px;
 }
 
 .carCard {
@@ -49,4 +62,41 @@
     height: 150px;
     width: 200px;
     object-fit: cover;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#paginationButtonsSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: inherit;
+    margin-top: 12px;
+}
+
+#searchInput {
+    width: inherit;
+    margin-top: 12px;
+}
+
+@media only screen and (min-width: 992px) {
+    #pageInputSection {
+        width: 350px;
+    }
+    #searchInputSection {
+        width: 350px;
+    }
+    .carCard {
+        width: 350px;
+    }
+    .carName {
+        font-size: 28px;
+    }
+    .carPrice {
+        font-size: 24px;
+    }
 }

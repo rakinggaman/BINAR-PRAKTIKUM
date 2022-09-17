@@ -5,19 +5,25 @@
 </head>
 
 <body>
-    <button id="startFetchDataBtn">MULAI AMBIL DATA</button>
+    <div id="container">
+        <div id="pageInputSection" class="doNotDisplay">
+            <label>Current Page</label>
+            <div id="paginationButtonsSection">
+                <button id="prevPageBtn">Previous</button>
+                <label id="pageDisplayTxt"></label>
+                <button id="nextPageBtn">Next</button>
+            </div>
+        </div>
 
-    <div id="pageInputSection" class="doNotDisplay">
-        <label>Current Page</label>
-        <input type="number" id="currentPageInput" />
+        <div id="searchInputSection" class="doNotDisplay">
+            <label>Search</label>
+            <input type="text" id="searchInput" placeholder="Masukkan keyword kesini" />
+        </div>
+
+
+        <div id="rentCarsList"></div>
     </div>
 
-    <div id="searchInputSection" class="doNotDisplay">
-        <label>Search </label>
-        <input type="text" id="searchPageInput" />
-    </div>
-
-    <div id="rentCarsList"></div>
 
     <script src="scripts.js"></script>
 </body>

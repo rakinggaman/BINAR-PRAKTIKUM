@@ -1,21 +1,26 @@
-// dapatkan elemen tombol "MULAI AMBIL DATA" dan div dengan id "rentCarsList" 
-const startFetchDataBtn = document.getElementById("startFetchDataBtn")
+// dapatkan elemen div dengan id "rentCarsList" 
 const rentCarsList = document.getElementById("rentCarsList")
 
 // mendapatkan div dengan id pageInputSection
 const pageInputSection = document.getElementById("pageInputSection")
 
-// mendapatkan div dengan id searchInputSection
-const searchInputSection = document.getElementById("searchInputSection")
-
-
-// mendapatkan div dengan id pageInputSection
-const searchInput = document.getElementById("searchInput")
-
 // mendapatkan input teks dengan id currentPageInput
 const currentPageInput = document.getElementById("currentPageInput")
 
+// mendapatkan div dengan id searchInputSection
+const searchInputSection = document.getElementById("searchInputSection")
 
+// mendapatkan input teks dengan id searchInput
+const searchInput = document.getElementById("searchInput")
+
+// mendapatkan button dengan id prevPageBtn
+const prevPageBtn = document.getElementById("prevPageBtn")
+
+// mendapatkan button dengan id nextPageBtn
+const nextPageBtn = document.getElementById("nextPageBtn")
+
+// mendapatkan button dengan id nextPageBtn
+const pageDisplayTxt = document.getElementById("pageDisplayTxt")
 
 // penyimpanan data yang ditarik dari API
 let rentedCarsData = []
@@ -29,8 +34,8 @@ const pageSize = 10
 // total jumlah halaman yang tersedia
 let pageCount = 0
 
-// ketika tombol startFetchDataBtn diklik, maka akan memanggil fungsi fetchRentCarsDataAsyncAwait
-startFetchDataBtn.addEventListener("click", fetchRentCarsDataAsyncAwait)
+//variabel halaman berapa sekarang
+let currentPage = 0
 
 // mengambil data dari API - cara Promise.then dan Promise.catch
 function fetchRentCarsData() {
@@ -47,7 +52,7 @@ async function fetchRentCarsDataAsyncAwait() {
     try {
         // sembunyikan pageInputSection
         pageInputSection.setAttribute('class', 'doNotDisplay')
-        searchInputSecton.setAttribute('class', 'doNotDisplay')
+        searchInputSection.setAttribute('class', 'doNotDisplay')
 
         let result = await fetch('https://bootcamp-rent-car.herokuapp.com/admin/car')
         let rentCars = await result.json()
@@ -60,10 +65,12 @@ async function fetchRentCarsDataAsyncAwait() {
         pageCount += remainder
 
         // mulai menampilkan data dari halaman pertama
-        getCarsPage(1)
+        currentPage = 1
+        getCarsPage()
 
         // tampilkan form navigasi halaman
         pageInputSection.removeAttribute('class')
+        searchInputSection.removeAttribute('class')
 
     } catch (err) {
         // jika terdapat error, maka akan print errornya
@@ -79,12 +86,31 @@ function clearRentCarList() {
     }
 }
 
+function updatePageDisplayText() {
+    pageDisplayTxt.innerHTML = `${currentPage}/${pageCount}`
+}
+
+function updatePaginationButtons() {
+    if (currentPage <= 1) {
+        prevPageBtn.setAttribute('disabled', 'true')
+    }
+
+    if (currentPage >= pageCount) {
+        nextPageBtn.setAttribute('disabled', 'true')
+    }
+
+    if (currentPage > 1 && currentPage < pageCount) {
+        prevPageBtn.removeAttribute('disabled')
+        nextPageBtn.removeAttribute('disabled')
+    }
+}
+
 // untuk mengambil data per halaman dari rentedCarsData
 // dan menampilkan nya
-function getCarsPage(currentPage) {
+function getCarsPage() {
     // jika halaman yang di inginkan lebih besar dari jumlah
     // halaman yang tersedia, maka batalkan proses penampilan data
-    if (currentPage > pageCount || rentedCarsData.length == 0) {
+    if (currentPage > pageCount || rentedCarsData.length == 0 || currentPage <= 0) {
         return;
     }
 
@@ -105,24 +131,59 @@ function getCarsPage(currentPage) {
         // agar dapat ditampilkan
         rentCarsList.append(createCarCard(car))
     })
+
+    updatePageDisplayText()
+    updatePaginationButtons()
 }
 
 
-
-// menambahkan event listener ketika teks dimasukkan dan ditekan enter
-// dengan callback berisi pengubahan halaman yang ditampilkan
-currentPageInput.addEventListener("change", (event) => {
-    // ubah string jadi angka
-    const desiredPage = parseInt(event.target.value)
-
-    // jika hasilnya bukan angka dikarenakan input invalid,
-    // maka kita tidak akan proses menampilkan halaman yang di inginkan
-    if (isNaN(desiredPage)) {
+function getCarsBySearch(searchTerm) {
+    if (!searchTerm) {
         return;
     }
 
-    // tampilkan halaman yang di inginkan
-    getCarsPage(desiredPage)
+    displayedCarsData = rentedCarsData.filter((carData) => {
+        return carData.name.toLowerCase().includes(searchTerm.toLowerCase())
+    })
+
+    // kosongkan list rentCarsList
+    clearRentCarList()
+
+    // mulai menambahkan item mobil kedalam rentCarsList
+    displayedCarsData.forEach((car) => {
+        // masukkan item card mobil ke rentCarsList 
+        // agar dapat ditampilkan
+        rentCarsList.append(createCarCard(car))
+    })
+}
+
+prevPageBtn.addEventListener("click", () => {
+    if (currentPage <= 1) {
+        return;
+    }
+
+    currentPage -= 1
+    getCarsPage()
+})
+
+nextPageBtn.addEventListener("click", () => {
+    if (currentPage >= pageCount) {
+        return;
+    }
+
+    currentPage += 1
+    getCarsPage()
+})
+
+
+searchInput.addEventListener("change", (event) => {
+    const value = event.target.value
+
+    if (!value) {
+        getCarsPage(1)
+    }
+
+    getCarsBySearch(value)
 })
 
 // untuk membuat komponen card yang menampilkan info dari mobil
@@ -130,7 +191,6 @@ currentPageInput.addEventListener("change", (event) => {
 function createCarCard(car) {
     /*
     kode dibawah untuk menghasilkan HTML setara:
-
     <div class="carCard">
         <img src="dari car.image" class="carImage" />
         <p class="carName">dari car.name</p>
@@ -160,3 +220,5 @@ function createCarCard(car) {
 
     return carCard
 }
+
+fetchRentCarsDataAsyncAwait()
